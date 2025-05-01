@@ -2,7 +2,7 @@
 import {loginUser,regiserUser} from '../controllers/AuthenticationController.js'
 import express from 'express'; // Import express for creating routes
 
-const router = express.Router();
+const authRouter = express.Router();
 
 
 // Routes folder and its files are used to define two things 
@@ -12,8 +12,8 @@ const router = express.Router();
 
 
 // Register User
-router.post('/register',regiserUser); // Register User
+authRouter.post('/register',regiserUser); // Register User
 // Login User
-router.post('/login',loginUser); // Login User
+authRouter.post('/login',loginUser); // Login User
 
-export default router; // Export the router to be used in the server.js file
+export default authRouter; // Export the router to be used in the server.js file
