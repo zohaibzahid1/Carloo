@@ -1,0 +1,160 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '../ui/Button.jsx'
+import { Menu, X, User, LogIn, Car, PenSquare } from 'lucide-react';
+//import { useAuth } from '@/contexts/AuthContext';
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAdmin, signOut } = true;
+  const navigate = useNavigate();
+
+  return (
+    <nav className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="container-custom py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <Car className="h-8 w-8 text-carloo-500" />
+            <span className="text-2xl font-heading font-bold text-gray-900">Carloo</span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
+              Home
+            </Link>
+            <Link to="/listings" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
+              Cars
+            </Link>
+            <Link to="/blog" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
+              Blog
+            </Link>
+            {user && (
+              <Link to="/blog/create" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors flex items-center gap-2">
+                <PenSquare className="h-4 w-4" />
+                Create Blog
+              </Link>
+            )}
+            <Link to="/about" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
+              About Us
+            </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-carloo-500 hover:text-carloo-600 font-medium transition-colors">
+                Admin
+              </Link>
+            )}
+          </div>
+
+          {/* Auth Buttons (Desktop) */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <Button onClick={() => signOut()} variant="outline" className="flex items-center space-x-2">
+                <LogIn className="h-4 w-4" />
+                <span>Sign Out</span>
+              </Button>
+            ) : (
+              <Button onClick={() => navigate('/auth')} className="bg-carloo-500 hover:bg-carloo-600 flex items-center space-x-2">
+                <User className="h-4 w-4" />
+                <span>Sign In</span>
+              </Button>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t mt-4 space-y-4">
+            <Link 
+              to="/" 
+              className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/listings" 
+              className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Cars
+            </Link>
+            <Link 
+              to="/blog" 
+              className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            {user && (
+              <Link 
+                to="/blog/create" 
+                className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors flex items-center gap-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <PenSquare className="h-4 w-4" />
+                Create Blog
+              </Link>
+            )}
+            <Link 
+              to="/about" 
+              className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About Us
+            </Link>
+            {isAdmin && (
+              <Link 
+                to="/admin" 
+                className="block py-2 text-carloo-500 hover:text-carloo-600 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin
+              </Link>
+            )}
+            <div className="flex flex-col space-y-2 pt-4 border-t">
+              {user ? (
+                <Button 
+                  onClick={() => {
+                    signOut();
+                    setIsMenuOpen(false);
+                  }} 
+                  variant="outline" 
+                  className="w-full"
+                >
+                  Sign Out
+                </Button>
+              ) : (
+                <Button 
+                  onClick={() => {
+                    navigate('/auth');
+                    setIsMenuOpen(false);
+                  }} 
+                  className="w-full bg-carloo-500 hover:bg-carloo-600"
+                >
+                  Sign In
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
