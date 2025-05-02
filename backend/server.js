@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import authRouter from '../backend/routes/AuthenticationRoute.js'
-import carListingRouter from './routes/listingCarsRoute.js';
-
+import carRouter from './routes/listingCarsRoute.js';
+import blogRouter from './routes/blogRoutes.js';
 
 dotenv.config(); // Load environment variables from .env file e.g port,db url, etc.
 
@@ -23,7 +23,9 @@ app.use('/authentication',authRouter); // e.g end url /authentication/register, 
 
 // this is a protected route, so only authenticated users can access it
 // trackback the function calls to understand how this is a protectd route
-app.use('/listmycars',carListingRouter); // e.g end url /listmycars/add 
+app.use('/listing',carRouter); // e.g end url /listmycars/add 
+
+app.use('/blogs', blogRouter); // e.g end url /blogs/add /blogs/getallblogs
 
 
 const PORT = process.env.PORT || 5000; // Set the port to the value in the .env file or default to 5000
