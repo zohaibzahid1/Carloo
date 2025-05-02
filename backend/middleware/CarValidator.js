@@ -12,7 +12,8 @@ export const carValidationRules = [
   body('location').isString().withMessage('Location is required').notEmpty(),
   body('availableFrom').isISO8601().withMessage('Available from must be a valid date').notEmpty(),
   body('availableTo').isISO8601().withMessage('Available to must be a valid date').notEmpty(),
-  body('images').isArray({ min: 1 }).withMessage('At least one image URL is required')
+  body('images').isArray({ min: 1 }).withMessage('At least one image URL is required'),
+  body('availability').isBoolean().withMessage('Availability must be a boolean value')
 ];
 
 export const validateCar = (req, res, next) => {

@@ -48,7 +48,8 @@ const carSchema = new mongoose.Schema({
       message: 'At least one image URL is required'
     }
   },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  availability: {type: Boolean, default: true, required: true}
 });
 
 // Static method to create new car

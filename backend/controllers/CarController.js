@@ -5,8 +5,6 @@ import Car from '../models/Car.js';
 export const createCar = async (req, res) => {
   try {
     const  ownerId  = req.user; // Assuming the user is authenticated
-     
-    
     const carData = req.body;
      // Log the car data for debugging
     const newCar = await Car.createNewCar(carData, ownerId);

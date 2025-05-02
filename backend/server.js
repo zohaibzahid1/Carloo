@@ -5,6 +5,8 @@ import connectDB from './config/db.js';
 import authRouter from '../backend/routes/AuthenticationRoute.js'
 import carRouter from './routes/listingCarsRoute.js';
 import blogRouter from './routes/blogRoutes.js';
+import profileUpdateRouter from './routes/profileUpdateRoute.js';
+import checkoutRouter from './routes/checkoutRoute.js'; 
 
 dotenv.config(); // Load environment variables from .env file e.g port,db url, etc.
 
@@ -26,6 +28,10 @@ app.use('/authentication',authRouter); // e.g end url /authentication/register, 
 app.use('/listing',carRouter); // e.g end url /listmycars/add 
 
 app.use('/blogs', blogRouter); // e.g end url /blogs/add /blogs/getallblogs
+
+app.use('/updateprofile', profileUpdateRouter); // e.g end url /updateprofile
+
+app.use('/checkout', checkoutRouter); // e.g end url /checkout
 
 
 const PORT = process.env.PORT || 5000; // Set the port to the value in the .env file or default to 5000

@@ -64,4 +64,36 @@ const loginUser = async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   };
-  export { regiserUser, loginUser }; // Export the functions for use in routes
+  
+  // create a function to update the user profile including password
+const updateUserProfile = async (req, res) => {
+    const { username, password, email, creditcard, phone, address } = req.body;
+  
+    try {
+      const user = await User.findById(req.user); // Get the authenticated user
+      if (!user) return res.status(404).json({ message: 'User not found' });
+  
+      // Update user details
+      user.username = username || user.username;
+      user.password = password || user.password; // Password should be hashed in the model's pre-save hook
+      user.email = email || user.email;
+      user.creditcard = creditcard || user.creditcard;
+      user.phone = phone || user.phone;
+      user.address = address || user.address;
+  
+      await user.save(); // Save updated user to database
+  
+      res.json({ message: 'Profile updated successfully' });
+    } catch (err) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
+
+
+
+
+
+
+
+  export { regiserUser, loginUser , updateUserProfile}; // Export the functions for use in routes
