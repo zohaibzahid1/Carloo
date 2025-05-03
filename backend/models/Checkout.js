@@ -4,8 +4,8 @@ import User from '../models/User.js';
 //import sendEmail from '../utils/sendEmail.js';
 
 const checkoutSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  listingId: { type: mongoose.Schema.Types.ObjectId, ref: 'Car', required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // thw one who is renting the car
+  listingId: { type: mongoose.Schema.Types.ObjectId, ref: 'Car', required: true }, // the car being rented
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
   totalPrice: { type: Number, required: true },
@@ -22,7 +22,10 @@ checkoutSchema.statics.createCheckout = async function ( userId, listingId, star
   if (car.ownerId._id.toString() === userId.toString()) {
     throw new Error('Cannot rent your own car');
   }
-
+  // add a check to ensure that end date is less then the car.availableto date
+  if (new Date(endDate) > new Date(car.availableTo)) {
+    throw new Error('Car is not available for the selected dates');
+  }
   const oneDay = 1000 * 60 * 60 * 24;
   const rentalDays = Math.ceil((new Date(endDate) - new Date(startDate)) / oneDay);
   const totalPrice = rentalDays * car.rentalPricePerDay;
@@ -30,6 +33,8 @@ checkoutSchema.statics.createCheckout = async function ( userId, listingId, star
 
 
   car.availability = false;
+  
+  
   await car.save();
 
   const userInfo = await User.findById(userId);

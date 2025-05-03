@@ -8,5 +8,6 @@ const blogRouter = express.Router();
 blogRouter.get('/getallblogs', getAllBlogs); // Public route
 blogRouter.post('/add', protectRoutes, blogValidationRules,validateBlog, createBlog); // Auth required
 blogRouter.delete('/del/:id', protectRoutes, deleteBlog); // Auth required
+blogRouter.get('/getuserblogs', protectRoutes, getBlogByUserId); // Auth required
 
 export default blogRouter;

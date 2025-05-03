@@ -15,7 +15,7 @@ export const getAllBlogs = async (req, res) => {
 export const createBlog = async (req, res) => {
   try {
     const blogData = req.body;
-    const ownerId = req.user; // Assuming the user is authenticated and their ID is in req.user
+    const ownerId = req.user; 
     const newBlog = await Blog.createNewBlog(blogData, ownerId);
     res.status(201).json(newBlog);
   } catch (err) {
@@ -38,6 +38,23 @@ export const deleteBlog = async (req, res) => {
     res.json({ message: 'Blog deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete blog' });
+    console.error(err);
+  }
+};
+
+
+// Get all blogs by a specific user (auth required)
+export const getBlogsByUser = async (req, res) => {
+  try {
+    const userId = req.user;
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const blogs = await Blog.find({ ownerId: userId });
+    res.json(blogs);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch blogs by user' });
     console.error(err);
   }
 };

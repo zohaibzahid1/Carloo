@@ -56,3 +56,14 @@ export const deleteCar = async (req, res) => {
     res.status(500).json({ message: 'Error deleting car', error: err });
   }
 };
+
+// Get all cars by a specific user (auth required)
+export const getCarByUserId = async (req, res) => {
+  try {
+    const userId = req.user; // Assuming the user is authenticated
+    const cars = await Car.find({ ownerId: userId });
+    res.status(200).json(cars);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching cars by user', error: err });
+  }
+};

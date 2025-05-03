@@ -7,6 +7,7 @@ import carRouter from './routes/listingCarsRoute.js';
 import blogRouter from './routes/blogRoutes.js';
 import profileUpdateRouter from './routes/profileUpdateRoute.js';
 import checkoutRouter from './routes/checkoutRoute.js'; 
+import performStartupTasks from './startupTasks.js'; // Import the startup tasks
 
 dotenv.config(); // Load environment variables from .env file e.g port,db url, etc.
 
@@ -14,7 +15,11 @@ dotenv.config(); // Load environment variables from .env file e.g port,db url, e
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+connectDB().then(async () => {
+    // Run startup tasks after DB connection is established
+    // await performStartupTasks();
+  });
+
 
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse incoming JSON requests

@@ -36,7 +36,7 @@ const regiserUser = async (req, res) => {
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
     // Send token and username in response
-    res.json({ token, username: user.username });
+    res.json({ token, username: user.username , userId: user._id});
     
   } catch (err) {
     console.error(err);
@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
       const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' }); // Generate JWT token 
 
       
-      res.json({ token, username: user.username }); // Send token and username in response
+      res.json({ token, username: user.username, userId: user._id }); // Send token username and userid in response
     
     } catch (err) {
       res.status(500).json({ message: 'Server error' });
