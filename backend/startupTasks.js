@@ -1,8 +1,7 @@
 import Car from './models/Car.js';
 import Checkout from './models/Checkout.js';
 import User from './models/User.js';
-// import sendEmail from './utils/sendEmail.js'; // Uncomment and implement this if you have an email utility
-
+import sendEmail from './utils/Emailsender.js'; // Adjust the import path as necessary
 const performStartupTasks = async () => {
   try {
     console.log('Running startup tasks...');
@@ -48,7 +47,7 @@ const performStartupTasks = async () => {
             The Carloo Team
           `;
 
-          // Uncomment and implement the sendEmail function to send the email
+          
           // await sendEmail({
           //   to: owner.email,
           //   subject: 'Car Listing Expired',
@@ -61,6 +60,7 @@ const performStartupTasks = async () => {
     }
 
     console.log('Task 2 completed: Car availability updated based on availableTo date.');
+
   } catch (error) {
     console.error('Error during startup tasks:', error.message);
   }

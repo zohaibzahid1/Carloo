@@ -17,10 +17,10 @@ function App() {
         
         {/* If you need a new route, just add it here under your name */}
         {/* Zohaib */}
-        <Route path="/login" element={<Login />} /> 
-        <Route path="/register" element={<Home />} />
-        <Route path= "/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>}/>
-        {/*Fatima*/}
+          <Route path="/login" element={<Login />} /> 
+          <Route path="/register" element={ <Home /> } />
+          <Route path="/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
+          {/*Fatima*/}
         <Route path="/home" element={ <Home /> }/> 
         <Route path="/blogs" element={<Home />} /> {/* This is the route for the all blogs page */}
         <Route path="/blogs/addblog" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the add blog page */}
