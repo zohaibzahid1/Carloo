@@ -1,6 +1,9 @@
 
 import {loginUser,regiserUser} from '../controllers/AuthenticationController.js'
 import express from 'express'; // Import express for creating routes
+import {userValidationRules,validateUser} from '../middleware/ValidateRegister.js';
+import {loginValidationRules,validateLogin} from '../middleware/ValidateLogin.js'; // Import validation rules and middleware
+
 
 const authRouter = express.Router();
 
@@ -12,8 +15,8 @@ const authRouter = express.Router();
 
 
 // Register User
-authRouter.post('/register',regiserUser); // Register User
+authRouter.post('/register',userValidationRules,validateUser,regiserUser); // Register User
 // Login User
-authRouter.post('/login',loginUser); // Login User
+authRouter.post('/login',loginValidationRules,validateLogin,loginUser); // Login User
 
 export default authRouter; // Export the router to be used in the server.js file

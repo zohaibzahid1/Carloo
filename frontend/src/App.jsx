@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './services/ProtectedRoute.js';
+import Home from './pages/home.jsx';
 
+// Temporary assignment of the component in each route
 function App() {
-  const [count, setCount] = useState(0)
-
+  // All the routes are defined here that will be used in the application using Link of react-router-dom
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Home />} /> 
+        <Route path="/register" element={<Home />} />
+        <Route path= "/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>}/>
+        <Route path="/home" element={ <Home /> }/>
+        <Route path="/aboutus" element={<Home />} />
+        <Route path="/contactus" element={<Home />} />
+        <Route path="/listings" element={<Home />} />
+        <Route path="/blogs" element={<Home />} />
+      
+      
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

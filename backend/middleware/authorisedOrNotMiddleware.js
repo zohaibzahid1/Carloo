@@ -13,7 +13,6 @@ const protectRoutes = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET); // the data enclosed in decoded will be the data with which this token was generated
       
       req.user = decoded.id; // attach user id to request
-      
       next(); // pass control to the next middleware or route
     } catch (error) {
       return res.status(401).json({ message: 'Not authorized, token failed' });
