@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ProtectedRoute from './services/ProtectedRoute.js';
+import ProtectedRoute from './services/ProtectedRoute.jsx';
 import Home from './pages/home.jsx';
+import Login from './pages/Login.jsx';
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         
         {/* If you need a new route, just add it here under your name */}
         {/* Zohaib */}
-        <Route path="/login" element={<Home />} /> 
+        <Route path="/login" element={<Login />} /> 
         <Route path="/register" element={<Home />} />
         <Route path= "/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>}/>
         {/*Fatima*/}

@@ -1,5 +1,5 @@
 import express from 'express';
-import {  getAllBlogs,createBlog,deleteBlog} from '../controllers/BlogController.js';
+import {  getAllBlogs,createBlog,deleteBlog,getBlogByUserId} from '../controllers/BlogController.js';
 import { blogValidationRules,validateBlog } from '../middleware/BlogValidator.js';
 import protectRoutes from '../middleware/authorisedOrNotMiddleware.js'
 

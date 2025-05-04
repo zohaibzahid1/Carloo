@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create instance
 const axiosInstance = axios.create({
-  baseURL: 'localhost:5000', 
+  baseURL: 'http://localhost:5000', 
   headers: {
     'Content-Type': 'application/json'
   }
@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 // for authentication in protected routes at backend using authOrNormiddleware.js
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
