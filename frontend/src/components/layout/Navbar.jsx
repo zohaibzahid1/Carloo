@@ -54,7 +54,7 @@ const Navbar = () => {
                 <span>Sign Out</span>
               </Button>
             ) : (
-              <Button onClick={() => navigate('/auth')} className="bg-carloo-500 hover:bg-carloo-600 flex items-center space-x-2">
+              <Button onClick={() => navigate('/login')} className="bg-carloo-500 hover:bg-carloo-600 flex items-center space-x-2">
                 <User className="h-4 w-4" />
                 <span>Sign In</span>
               </Button>
@@ -141,7 +141,7 @@ const Navbar = () => {
               ) : (
                 <Button 
                   onClick={() => {
-                    navigate('/auth');
+                    navigate('/login');
                     setIsMenuOpen(false);
                   }} 
                   className="w-full bg-carloo-500 hover:bg-carloo-600"

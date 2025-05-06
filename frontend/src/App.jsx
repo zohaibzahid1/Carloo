@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   // All the routes are defined here that will be used in the application using Link of react-router-dom
@@ -38,6 +39,7 @@ function App() {
         <Route path="/checkout" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the checkout page */}
         <Route path="/checkout/result" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the success/faliure page after checkout */}
         </Routes>
+        <ToastContainer position="top-center" autoClose={3000} />
     </BrowserRouter>
   );
 }
