@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Car from '../models/Car.js';
 import User from '../models/User.js';
-//import sendEmail from '../utils/sendEmail.js';
+import sendEmail from '../utils/Emailsender.js';
 
 const checkoutSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // thw one who is renting the car
@@ -44,13 +44,13 @@ checkoutSchema.statics.createCheckout = async function ( userId, listingId, star
 
   const ownerEmail = owner.email; // Now get the email from the user
 
-//   await sendEmail({
-//     to: ownerEmail,
-//     subject: 'New Rental Checkout',
-//     text: `Your car (${car.car.make} ${car.car.model}) has been rented from ${startDate} to ${endDate}.
-// Rented by: ${userInfo.username}, Email: ${userInfo.email} , Phone: ${userInfo.phone}
-// Total price: Rs. ${totalPrice}`
-//   });
+  await sendEmail({
+    to: ownerEmail,
+    subject: 'New Rental Checkout',
+    text: `Your car (${car.car.make} ${car.car.model}) has been rented from ${startDate} to ${endDate}.
+    Rented by: ${userInfo.username}, Email: ${userInfo.email} , Phone: ${userInfo.phone}
+    Total price: Rs. ${totalPrice}`
+  });
 console.log(`Email sent to ${ownerEmail} with rental details.`);
 console.log('   Rental details:', {
     car: `${car.car.make} ${car.car.model}`,

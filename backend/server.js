@@ -17,7 +17,7 @@ const app = express();
 // Connect to MongoDB
 connectDB().then(async () => {
     // Run startup tasks after DB connection is established
-    // await performStartupTasks();
+     await performStartupTasks();
   });
 
 

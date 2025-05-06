@@ -44,7 +44,7 @@ export const deleteBlog = async (req, res) => {
 
 
 // Get all blogs by a specific user (auth required)
-export const getBlogsByUser = async (req, res) => {
+export const getBlogByUserId = async (req, res) => {
   try {
     const userId = req.user;
     if (!userId) {

@@ -1,7 +1,7 @@
 // routes/carRoutes.js
 import express from 'express';
 import { carValidationRules, validateCar } from '../middleware/carValidator.js'; // Import validation rules and middleware
-import { createCar, getAllCars, getCarById, updateCar, deleteCar } from '../controllers/CarController.js';
+import { createCar, getAllCars, getCarById, updateCar, deleteCar,getCarByUserId } from '../controllers/CarController.js';
 import protectRoutes from '../middleware/authorisedOrNotMiddleware.js'
 const carRouter = express.Router();
 
