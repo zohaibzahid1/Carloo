@@ -5,6 +5,7 @@ dotenv.config(); // Load environment variables from .env file
 
 const connectDB = async () => {
   try {
+    
     const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB connected: ${conn.connection.host}`);
   } catch (err) {
@@ -12,5 +13,6 @@ const connectDB = async () => {
     process.exit(1); // Exit the process if connection fails
   }
 };
+
 
 export default connectDB; // Export the connectDB function to be used in server.js

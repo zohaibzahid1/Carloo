@@ -2,12 +2,16 @@ import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
-import Home from './pages/Home.jsx';
+import Home from './pages/home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+
 import Checkout from './pages/Checkout.jsx';
 import OrderConfirmation from './pages/OrderConfirmation.jsx';
+import Register from './pages/Register.jsx';
+import { ToastContainer } from 'react-toastify';
+
 function App() {
   // All the routes are defined here that will be used in the application using Link of react-router-dom
   // Temporary assignment of the component in each route
@@ -20,7 +24,7 @@ function App() {
         {/* If you need a new route, just add it here under your name */}
         {/* Zohaib */}
           <Route path="/login" element={<Login />} /> 
-          <Route path="/register" element={ <Home /> } />
+          <Route path="/register" element={ <Register /> } />
           <Route path="/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
           {/*Fatima*/}
         <Route path="/home" element={ <Home /> }/> 
@@ -39,6 +43,7 @@ function App() {
         <Route path="/checkout" element={<ProtectedRoute> <Checkout/> </ProtectedRoute>} /> {/* This is the route for the checkout page */}
         <Route path="/checkout/result" element={<ProtectedRoute> <OrderConfirmation /> </ProtectedRoute>} /> {/* This is the route for the success/faliure page after checkout */}
         </Routes>
+        <ToastContainer position="top-center" autoClose={3000} />
     </BrowserRouter>
   );
 }
