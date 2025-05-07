@@ -2,7 +2,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
-import Home from './pages/index.jsx';
+import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
@@ -12,6 +12,7 @@ import OrderConfirmation from './pages/OrderConfirmation.jsx';
 import Register from './pages/Register.jsx';
 import { ToastContainer } from 'react-toastify';
 import ListYourCarPage from './pages/ListYourcarPage.jsx';
+import Listing from './pages/Listing.jsx';
 
 function App() {
   // All the routes are defined here that will be used in the application using Link of react-router-dom
@@ -33,13 +34,13 @@ function App() {
         <Route path="/blogs/addblog" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the add blog page */}
         <Route path="/blogs/myblogs" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the blogs by a user where he will also have the option to delete em */}
         {/* Ayesha */}
-        <Route path="/listings" element={<Home />} /> {/* This is the route for the all listings page */}
+        <Route path="/listings" element={<Listing />} /> {/* This is the route for the all listings page */}
         <Route path="/listing/addlisting" element={<ProtectedRoute> <ListYourCarPage /> </ProtectedRoute>} /> {/* This is the route for the add listing page */}
         <Route path="/listing/mylistings" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the listings by a user where he will also have the option to delete em */}
         <Route path="/listing/mylistings/update" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the update listing page */}
         {/* Danish */}
         <Route path="/about" element={<AboutUs />} />
-        <Route path="/contactus" element={<Home />} />
+        <Route path="/contactus" element={<AboutUs />} />
         <Route path="/listing/detailview" element={<ProtectedRoute> <CarDetail /> </ProtectedRoute>} /> {/* This is the route for the detail view of a listing */}
         <Route path="/checkout" element={<ProtectedRoute> <Checkout/> </ProtectedRoute>} /> {/* This is the route for the checkout page */}
         <Route path="/checkout/result" element={<ProtectedRoute> <OrderConfirmation /> </ProtectedRoute>} /> {/* This is the route for the success/faliure page after checkout */}

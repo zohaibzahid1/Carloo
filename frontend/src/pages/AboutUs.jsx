@@ -180,7 +180,7 @@ const AboutUs = () => {
     <div className="p-6">
       <h3 className="text-xl font-semibold text-gray-900">{member.name}</h3>
       <p className="text-blue-600 mb-2">{member.role}</p>
-      <p className="text-gray-700 mb-4">{member.bio}</p>
+      <p className="text-gray-700 mb-4 text-justify">{member.bio}</p>
       
       {/* LinkedIn button/icon */}
       <div className="flex justify-end">
