@@ -1,12 +1,13 @@
-import { useState } from 'react';
+//import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
-import Home from './pages/Home.jsx';
+import Home from './pages/index.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import { ToastContainer } from 'react-toastify';
+import ListYourCarPage from './pages/ListYourcarPage.jsx';
 
 function App() {
   // All the routes are defined here that will be used in the application using Link of react-router-dom
@@ -29,7 +30,7 @@ function App() {
         <Route path="/blogs/myblogs" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the blogs by a user where he will also have the option to delete em */}
         {/* Ayesha */}
         <Route path="/listings" element={<Home />} /> {/* This is the route for the all listings page */}
-        <Route path="/listing/addlisting" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the add listing page */}
+        <Route path="/listing/addlisting" element={<ProtectedRoute> <ListYourCarPage /> </ProtectedRoute>} /> {/* This is the route for the add listing page */}
         <Route path="/listing/mylistings" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the listings by a user where he will also have the option to delete em */}
         <Route path="/listing/mylistings/update" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the update listing page */}
         {/* Danish */}
