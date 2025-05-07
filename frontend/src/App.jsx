@@ -6,6 +6,9 @@ import Home from './pages/home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+
+import Checkout from './pages/Checkout.jsx';
+import OrderConfirmation from './pages/OrderConfirmation.jsx';
 import Register from './pages/Register.jsx';
 import { ToastContainer } from 'react-toastify';
 
@@ -37,8 +40,8 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contactus" element={<Home />} />
         <Route path="/listing/detailview" element={<ProtectedRoute> <CarDetail /> </ProtectedRoute>} /> {/* This is the route for the detail view of a listing */}
-        <Route path="/checkout" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the checkout page */}
-        <Route path="/checkout/result" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the success/faliure page after checkout */}
+        <Route path="/checkout" element={<ProtectedRoute> <Checkout/> </ProtectedRoute>} /> {/* This is the route for the checkout page */}
+        <Route path="/checkout/result" element={<ProtectedRoute> <OrderConfirmation /> </ProtectedRoute>} /> {/* This is the route for the success/faliure page after checkout */}
         </Routes>
         <ToastContainer position="top-center" autoClose={3000} />
     </BrowserRouter>
