@@ -14,4 +14,5 @@ const connectDB = async () => {
   }
 };
 
+
 export default connectDB; // Export the connectDB function to be used in server.js
