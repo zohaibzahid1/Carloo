@@ -98,6 +98,7 @@ const LoginForm = () => {
 
   const handleRegister = () => {
     console.log('Redirecting to registration page');
+    navigate('/register'); // Redirect to registration page
   };
 
   return (

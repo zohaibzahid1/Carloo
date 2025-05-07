@@ -2,6 +2,7 @@ import React from 'react';
 import LoginForm from '../components/authentication/LoginForm';
 import LoginVisual from '../components/authentication/LoginVisual';
 import Layout from '../components/layout/Layout';
+import Register from './Register';
 const LoginPage = () => {
   return (
     <Layout>

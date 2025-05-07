@@ -2,10 +2,11 @@ import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
-import Home from './pages/Home.jsx';
+import Home from './pages/home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+import Register from './pages/Register.jsx';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
         {/* If you need a new route, just add it here under your name */}
         {/* Zohaib */}
           <Route path="/login" element={<Login />} /> 
-          <Route path="/register" element={ <Home /> } />
+          <Route path="/register" element={ <Register /> } />
           <Route path="/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
           {/*Fatima*/}
         <Route path="/home" element={ <Home /> }/> 
