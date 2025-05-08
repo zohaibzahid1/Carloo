@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SearchBar from '../ui/SearchBar';
+import SearchBar from '../components/ui/SearchBar';
 
 const Hero = () => {
   return (

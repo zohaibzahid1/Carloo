@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from '../ui/Button.jsx'
+import { Button } from '../components/ui/Button.jsx'
 import { ArrowRight } from 'lucide-react'
 import CarCard from '../cars/CarCard.jsx';
 // Mock data for featured cars
