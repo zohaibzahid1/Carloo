@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SearchBar from '../components/ui/SearchBar';
-
+import SearchBar from '../ui/SearchBar.jsx'
 const Hero = () => {
   return (
     <section className="relative h-screen">

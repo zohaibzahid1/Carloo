@@ -70,6 +70,7 @@ const LoginForm = () => {
           sessionStorage.setItem('token', token); // or sessionStorage
           navigate('/'); // Redirect to home page or dashboard
           console.log('Login successful with:', formValues);
+          toast.success('Login successful!');
           // Optionally redirect user, e.g., navigate('/dashboard')
         })
         .catch(error => {

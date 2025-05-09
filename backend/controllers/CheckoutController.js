@@ -1,6 +1,5 @@
 import Checkout from '../models/Checkout.js';
-import Car from '../models/Car.js';
-import User from '../models/User.js';
+import MyRents from '../models/MyRents.js';
 
 export const createCheckout = async (req, res) => {
   try {
@@ -11,8 +10,14 @@ export const createCheckout = async (req, res) => {
         req.body.startDate,
         req.body.endDate
     );
-
-    res.status(201).json({ message: 'Checkout successful', checkout });
+    // if the checkout is successful, create a new rent record
+    if (checkout) {
+      const flag = await MyRents.createNewRent(userId, req.body.listingId,req.body.startDate, req.body.endDate);
+      if (!flag) {
+        throw new Error('Failed to create rent record');
+      }
+    }
+    res.status(201).json({ message: 'Checkout successful and rent record created', checkout });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

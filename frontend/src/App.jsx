@@ -2,7 +2,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
-import Home from './pages/Home.jsx';
+import Home from './pages/home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
@@ -29,7 +29,7 @@ function App() {
           <Route path="/register" element={ <Register /> } />
           <Route path="/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
           {/*Fatima*/}
-        <Route path="/home" element={ <Home /> }/> 
+        <Route path="/home" element={ < Home/> }/> 
         <Route path="/blogs" element={<Home />} /> {/* This is the route for the all blogs page */}
         <Route path="/blogs/addblog" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the add blog page */}
         <Route path="/blogs/myblogs" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the blogs by a user where he will also have the option to delete em */}

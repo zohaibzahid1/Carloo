@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import VisualSection from '../components/authentication/RegisterVisual';
 import RegistrationForm from '../components/authentication/RegistrationForm';
-import axiosInstance from '../services/AxiosInterceptor';
 
 const Register = () => {
   

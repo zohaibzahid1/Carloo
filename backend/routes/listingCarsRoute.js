@@ -11,7 +11,7 @@ carRouter.post('/cars', protectRoutes, carValidationRules, validateCar, createCa
 // Get all cars
 carRouter.get('/cars', getAllCars); // everyone can view all cars
 
-// Get car by ID
+// Get car by  car ID
 carRouter.get('/cars/:id', getCarById);
 
 // Update a car
