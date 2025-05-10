@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button.jsx'
-import { Menu, X, User, LogIn, Car, PenSquare } from 'lucide-react';
+import { Menu, X, User, LogIn, Car, PenSquare, ChevronDown } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 //import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
@@ -27,7 +33,21 @@ const Navbar = () => {
             <Link to="/listings" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
               Cars
             </Link>
-            <Link to="/blog" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-gray-700 hover:text-carloo-500 font-medium transition-colors flex items-center gap-0.5 text-sm">
+                Listings
+                <ChevronDown className="h-2.5 w-2.5" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => navigate('/listing/mylistings')}>
+                  My Listings
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/listings/myrents')}>
+                  My Rents
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Link to="/blogs" className="text-gray-700 hover:text-carloo-500 font-medium transition-colors">
               Blog
             </Link>
             {user && (
