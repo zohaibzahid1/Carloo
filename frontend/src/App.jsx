@@ -6,6 +6,7 @@ import Home from './pages/home.jsx';
 import Login from './pages/Login.jsx';
 import CarDetail from './pages/CarDetail.jsx';
 import AboutUs from './pages/AboutUs.jsx';
+import RentalHistory from './components/Rentals/RentalHistory.jsx';
 
 import Checkout from './pages/Checkout.jsx';
 import OrderConfirmation from './pages/OrderConfirmation.jsx';
@@ -29,7 +30,7 @@ function App() {
           <Route path="/register" element={ <Register /> } />
           <Route path="/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
           {/*Fatima*/}
-        <Route path="/home" element={ < Home/> }/> 
+        <Route path="/home" element={ < RentalHistory/> }/> 
         <Route path="/blogs" element={<Home />} /> {/* This is the route for the all blogs page */}
         <Route path="/blogs/addblog" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the add blog page */}
         <Route path="/blogs/myblogs" element={<ProtectedRoute> <Home /> </ProtectedRoute>} /> {/* This is the route for the blogs by a user where he will also have the option to delete em */}
