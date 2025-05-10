@@ -1,314 +1,392 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { ImagePlus } from 'lucide-react';
-import Layout from '../components/layout/Layout';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../components/ui/button.jsx';
 import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
-import { Button } from '../components/ui/button';
-import axiosInstance from '../services/AxiosInterceptor';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'react-toastify';
+import axiosInstance from '../services/AxiosInterceptor';
+import Layout from '../components/layout/Layout';
 
-const formSchema = z.object({
-  make: z.string().min(2, "Make must be at least 2 characters"),
-  model: z.string().min(1, "Model is required"),
-  year: z.string().regex(/^\d{4}$/, "Must be a valid year")
-    .refine((val) => {
-      const year = parseInt(val);
-      return year >= 1900 && year <= new Date().getFullYear() + 1;
-    }, "Year must be between 1900 and next year"),
-  color: z.string().min(1, "Color is required"),
-  registrationNumber: z.string().min(1, "Registration number is required"),
-  rentalPricePerDay: z.string()
-    .min(1, "Price is required")
-    .refine((val) => parseInt(val) >= 100, "Price must be at least 100"),
-  location: z.string().min(1, "Location is required"),
-  availableFrom: z.string().min(1, "Start date is required"),
-  availableTo: z.string().min(1, "End date is required"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  images: z.any().refine((files) => files?.length > 0, "At least one image is required"),
-});
-
-const ListYourCarPage = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      make: "",
-      model: "",
-      year: "",
-      color: "",
-      registrationNumber: "",
-      rentalPricePerDay: "",
-      location: "",
-      availableFrom: "",
-      availableTo: "",
-      description: "",
-      images: null,
+const ListYourCar = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    car: {
+      make: '',
+      model: '',
+      year: '',
+      color: '',
+      transmission: '',
+      fuelType: '',
+      mileage: '',
+      seats: '',
+      registrationNumber: '',
     },
+    rentalPricePerDay: '',
+    location: '',
+    availableFrom: '',
+    availableTo: '',
+    description: '',
+    images: [],
+    availability: true
   });
 
-  const onSubmit = async (values) => {
-    try {
-      setIsSubmitting(true);
-      
-      // Create FormData for file upload
-      const formData = new FormData();
-      
-      // Add car details
-      formData.append('car', JSON.stringify({
-        make: values.make,
-        model: values.model,
-        year: parseInt(values.year),
-        color: values.color,
-        registrationNumber: values.registrationNumber
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.startsWith('car.')) {
+      const carField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        car: {
+          ...prev.car,
+          [carField]: value
+        }
       }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
 
-      // Add other fields
-      formData.append('rentalPricePerDay', parseInt(values.rentalPricePerDay));
-      formData.append('location', values.location);
-      formData.append('availableFrom', values.availableFrom);
-      formData.append('availableTo', values.availableTo);
-      formData.append('description', values.description);
+  const handleSelectChange = (name, value) => {
+    if (name.startsWith('car.')) {
+      const carField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        car: {
+          ...prev.car,
+          [carField]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
 
-      // Add images
-      if (values.images) {
-        Array.from(values.images).forEach(file => {
-          formData.append('images', file);
-        });
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData(prev => ({
+      ...prev,
+      images: files
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Convert images to base64
+      const imageUrls = [];
+      if (formData.images && formData.images.length > 0) {
+        for (const image of formData.images) {
+          const reader = new FileReader();
+          const imagePromise = new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+          });
+          reader.readAsDataURL(image);
+          const base64Image = await imagePromise;
+          imageUrls.push(base64Image);
+        }
       }
 
-      // Send request to backend
-      const response = await axiosInstance.post('/cars', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      // Prepare the data object
+      const carData = {
+        car: {
+          make: formData.car.make,
+          model: formData.car.model,
+          year: parseInt(formData.car.year),
+          color: formData.car.color,
+          transmission: formData.car.transmission,
+          fuelType: formData.car.fuelType,
+          mileage: parseInt(formData.car.mileage),
+          seats: parseInt(formData.car.seats),
+          registrationNumber: formData.car.registrationNumber
         },
+        rentalPricePerDay: parseFloat(formData.rentalPricePerDay),
+        location: formData.location,
+        availableFrom: formData.availableFrom,
+        availableTo: formData.availableTo,
+        description: formData.description,
+        availability: formData.availability,
+        images: imageUrls
+      };
+
+      const response = await axiosInstance.post('/listing/cars', carData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.status === 201) {
         toast.success('Car listed successfully!');
-        form.reset();
-        // Optionally redirect to the car details page
-        // navigate(`/cars/${response.data._id}`);
+        navigate('/mylistings');
       } else {
-        toast.error(response.data.message || 'Failed to list car');
+        throw new Error(response.data.message || 'Failed to list car');
       }
     } catch (error) {
       console.error('Error listing car:', error);
-      toast.error(
-        error.response?.data?.message || 
-        error.response?.data?.error?.message || 
-        'An error occurred while listing your car'
-      );
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error?.message || 
+                          error.message || 
+                          'Failed to list car';
+      toast.error(errorMessage);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
     <Layout>
-      <div className="container-custom py-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold font-heading mb-6">List Your Car</h1>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="images"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <FormItem>
-                    <FormLabel>Car Images</FormLabel>
-                    <FormControl>
-                      <div className="flex flex-col items-center justify-center w-full">
-                        <label
-                          htmlFor="car-images"
-                          className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                        >
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <ImagePlus className="w-12 h-12 mb-4 text-gray-400" />
-                            <p className="mb-2 text-sm text-gray-500">
-                              <span className="font-semibold">Click to upload</span> or drag and drop
-                            </p>
-                            <p className="text-xs text-gray-500">PNG, JPG or WEBP (MAX. 800x400px)</p>
-                          </div>
-                          <input
-                            id="car-images"
-                            type="file"
-                            multiple
-                            className="hidden"
-                            accept="image/*"
-                            onChange={(e) => onChange(e.target.files)}
-                            {...field}
-                          />
-                        </label>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <div className="bg-gradient-to-br from-blue-50 via-blue-100/50 to-white min-h-screen py-12">
+        <div className="container-custom">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-heading font-bold text-blue-900 mb-3">List Your Car</h1>
+              <p className="text-blue-800/80">Share your car with the community and start earning</p>
+            </div>
 
+            <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="make"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Make</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., Toyota" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Car Details */}
+                <div className="space-y-4">
+                  <h2 className="text-xl font-heading font-semibold text-blue-900 mb-4">Car Details</h2>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="car.make" className="text-blue-900">Make</Label>
+                    <Input
+                      id="car.make"
+                      name="car.make"
+                      value={formData.car.make}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="model"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Model</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., Camry" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="car.model" className="text-blue-900">Model</Label>
+                    <Input
+                      id="car.model"
+                      name="car.model"
+                      value={formData.car.model}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="year"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Year</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., 2020" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="car.year" className="text-blue-900">Year</Label>
+                    <Input
+                      id="car.year"
+                      name="car.year"
+                      type="number"
+                      value={formData.car.year}
+                      onChange={handleChange}
+                      required
+                      min="1900"
+                      max={new Date().getFullYear() + 1}
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="color"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Color</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., Silver" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="car.color" className="text-blue-900">Color</Label>
+                    <Input
+                      id="car.color"
+                      name="car.color"
+                      value={formData.car.color}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="registrationNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Registration Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., ABC-123" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="car.transmission" className="text-blue-900">Transmission</Label>
+                    <Select
+                      value={formData.car.transmission}
+                      onValueChange={(value) => handleSelectChange('car.transmission', value)}
+                    >
+                      <SelectTrigger className="border-blue-200 focus:border-blue-500 text-gray-900">
+                        <SelectValue placeholder="Select transmission" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="automatic" className="text-gray-900">Automatic</SelectItem>
+                        <SelectItem value="manual" className="text-gray-900">Manual</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="rentalPricePerDay"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Daily Rate (PKR)</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder="e.g., 5000" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="car.fuelType" className="text-blue-900">Fuel Type</Label>
+                    <Select
+                      value={formData.car.fuelType}
+                      onValueChange={(value) => handleSelectChange('car.fuelType', value)}
+                    >
+                      <SelectTrigger className="border-blue-200 focus:border-blue-500 text-gray-900">
+                        <SelectValue placeholder="Select fuel type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="petrol" className="text-gray-900">Petrol</SelectItem>
+                        <SelectItem value="diesel" className="text-gray-900">Diesel</SelectItem>
+                        <SelectItem value="electric" className="text-gray-900">Electric</SelectItem>
+                        <SelectItem value="hybrid" className="text-gray-900">Hybrid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-                <FormField
-                  control={form.control}
-                  name="availableFrom"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Available From</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Rental Details */}
+                <div className="space-y-4">
+                  <h2 className="text-xl font-heading font-semibold text-blue-900 mb-4">Rental Details</h2>
 
-                <FormField
-                  control={form.control}
-                  name="availableTo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Available To</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="space-y-2">
+                    <Label htmlFor="car.mileage" className="text-blue-900">Mileage</Label>
+                    <Input
+                      id="car.mileage"
+                      name="car.mileage"
+                      type="number"
+                      value={formData.car.mileage}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="car.seats" className="text-blue-900">Number of Seats</Label>
+                    <Input
+                      id="car.seats"
+                      name="car.seats"
+                      type="number"
+                      value={formData.car.seats}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="car.registrationNumber" className="text-blue-900">Registration Number</Label>
+                    <Input
+                      id="car.registrationNumber"
+                      name="car.registrationNumber"
+                      value={formData.car.registrationNumber}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="rentalPricePerDay" className="text-blue-900">Price per Day ($)</Label>
+                    <Input
+                      id="rentalPricePerDay"
+                      name="rentalPricePerDay"
+                      type="number"
+                      value={formData.rentalPricePerDay}
+                      onChange={handleChange}
+                      required
+                      min="100"
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="location" className="text-blue-900">Location</Label>
+                    <Input
+                      id="location"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="availableFrom" className="text-blue-900">Available From</Label>
+                    <Input
+                      id="availableFrom"
+                      name="availableFrom"
+                      type="date"
+                      value={formData.availableFrom}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="availableTo" className="text-blue-900">Available To</Label>
+                    <Input
+                      id="availableTo"
+                      name="availableTo"
+                      type="date"
+                      value={formData.availableTo}
+                      onChange={handleChange}
+                      required
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Karachi, Pakistan" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* Description and Images */}
+              <div className="mt-6 space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="description" className="text-blue-900">Description</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                    className="border-blue-200 focus:border-blue-500 min-h-[100px] text-gray-900"
+                  />
+                </div>
 
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Describe your car (features, condition, etc.)" 
-                        className="min-h-[120px]"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <div className="space-y-2">
+                  <Label htmlFor="images" className="text-blue-900">Car Images</Label>
+                  <Input
+                    id="images"
+                    name="images"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    required
+                    className="border-blue-200 focus:border-blue-500"
+                  />
+                  <p className="text-sm text-blue-600">Upload at least one image of your car</p>
+                </div>
+              </div>
 
-              <Button 
-                type="submit" 
-                className="w-full bg-carloo-500 hover:bg-carloo-600"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Listing Car...' : 'List Your Car'}
-              </Button>
+              <div className="mt-8 flex justify-center">
+                <Button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  disabled={loading}
+                >
+                  {loading ? 'Listing Car...' : 'List Your Car'}
+                </Button>
+              </div>
             </form>
-          </Form>
+          </div>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default ListYourCarPage; 
+export default ListYourCar; 
