@@ -59,7 +59,7 @@ const FormInput = ({
           placeholder={placeholder}
           className={`w-full h-12 px-4 border ${
             error ? 'border-red-500 bg-red-50 focus:ring-red-500/10' : 'border-gray-200'
-          } rounded-lg text-base transition-all duration-200 bg-gray-50
+          } rounded-lg text-base transition-all duration-200 bg-gray-50 text-gray-900
             focus:outline-none focus:border-primary focus:bg-white focus:ring-3 focus:ring-primary/10
             placeholder:text-gray-400`}
         />
