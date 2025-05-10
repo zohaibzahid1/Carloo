@@ -7,6 +7,7 @@ import  {getAllRents,getRentsByUserId}  from '../controllers/MyRentsController.j
 // get all rents
 MyrentRouter.get('/all',protectRoutes,getAllRents);
 
+
 // get all rents by user id
 MyrentRouter.get('/myrents', protectRoutes ,getRentsByUserId);
 

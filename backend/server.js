@@ -45,6 +45,7 @@ app.use('/rents', MyrentRouter); // e.g end url /myrents
 app.use('/reviews', reviewsRouter); // e.g end url /reviews
 
 
+
 const PORT = process.env.PORT || 5000; // Set the port to the value in the .env file or default to 5000
 
 
