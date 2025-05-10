@@ -130,7 +130,7 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl bg-white rounded-lg shadow-lg p-6">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-900">Update Car Details</DialogTitle>
         </DialogHeader>

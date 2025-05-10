@@ -1,4 +1,3 @@
-
 import React from 'react';
 import RentalRow from './RentalRow';
 
@@ -12,15 +11,16 @@ const RentalTable = ({ rentals, onSubmitReview }) => {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full bg-white rounded-lg shadow border-separate border-spacing-0">
+    <div className="overflow-x-auto w-full">
+      {/* Desktop Table */}
+      <table className="hidden sm:table w-full min-w-[600px] bg-white rounded-lg shadow border-separate border-spacing-0 text-xs sm:text-sm">
         <thead className="bg-gray-100">
           <tr>
-            <th className="py-4 px-6 text-left text-sm font-medium text-gray-700 first:rounded-tl-lg">Car</th>
-            <th className="py-4 px-6 text-left text-sm font-medium text-gray-700">Period</th>
-            <th className="py-4 px-6 text-left text-sm font-medium text-gray-700">Price</th>
-            <th className="py-4 px-6 text-left text-sm font-medium text-gray-700">Location</th>
-            <th className="py-4 px-6 text-center text-sm font-medium text-gray-700 last:rounded-tr-lg">Action</th>
+            <th className="py-3 px-4 sm:py-4 sm:px-6 text-left font-medium text-gray-700 first:rounded-tl-lg">Car</th>
+            <th className="py-3 px-4 sm:py-4 sm:px-6 text-left font-medium text-gray-700">Period</th>
+            <th className="py-3 px-4 sm:py-4 sm:px-6 text-left font-medium text-gray-700">Price</th>
+            <th className="py-3 px-4 sm:py-4 sm:px-6 text-left font-medium text-gray-700">Location</th>
+            <th className="py-3 px-4 sm:py-4 sm:px-6 text-center font-medium text-gray-700 last:rounded-tr-lg">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -29,10 +29,23 @@ const RentalTable = ({ rentals, onSubmitReview }) => {
               key={rental._id}
               rental={rental}
               onSubmitReview={onSubmitReview}
+              isMobile={false}
             />
           ))}
         </tbody>
       </table>
+
+      {/* Mobile Cards */}
+      <div className="sm:hidden flex flex-col gap-4">
+        {rentals.map((rental) => (
+          <RentalRow 
+            key={rental._id}
+            rental={rental}
+            onSubmitReview={onSubmitReview}
+            isMobile={true}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -42,7 +42,7 @@ const Navbar = () => {
                 <DropdownMenuItem onClick={() => navigate('/listing/mylistings')}>
                   My Listings
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/listings/myrents')}>
+                <DropdownMenuItem onClick={() => navigate('/listing/myrents')}>
                   My Rents
                 </DropdownMenuItem>
               </DropdownMenuContent>
