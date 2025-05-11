@@ -1,39 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
-import axiosInstance from '../services/AxiosInterceptor';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMyBlogs, deleteBlog } from '../store/slices/blogSlice';
 
 const MyBlogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { myBlogs, loading, error } = useSelector((state) => state.blogs);
 
   useEffect(() => {
-    const fetchMyBlogs = async () => {
-      try {
-        const response = await axiosInstance.get('/blogs/getuserblogs');
-        setBlogs(response.data);
-      } catch (err) {
-        toast.error('Failed to fetch your blogs');
-      } finally {
-        setLoading(false);
-      }
-    };
+     if (!myBlogs || myBlogs.length === 0) {
+    dispatch(fetchMyBlogs());
+  }
+  }, []); // this will run only once when the component mounts because of the empty dependency array
+  // and after the intital fetch of blogs it will get the blogs from the redux store
 
-    fetchMyBlogs();
-  }, []);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   const handleDelete = async (blogId) => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
-      try {
-        await axiosInstance.delete(`/blogs/del/${blogId}`);
-        setBlogs(blogs.filter(blog => blog._id !== blogId));
-        toast.success('Blog deleted successfully');
-      } catch (err) {
-        toast.error('Failed to delete blog');
-      }
+      const resultAction = await dispatch(deleteBlog(blogId));
+      // if (deleteBlog.fulfilled.match(resultAction)) {
+      //   toast.success('Blog deleted successfully');
+      // } else {
+      //   toast.error(resultAction.payload || 'Failed to delete blog');
+      // }
     }
   };
 
@@ -75,7 +73,7 @@ const MyBlogs = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogs.map((blog) => (
+          {myBlogs.map((blog) => (
             <article key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -86,15 +84,12 @@ const MyBlogs = () => {
                     {format(new Date(blog.createdAt), 'MMM dd, yyyy')}
                   </time>
                 </div>
-                
                 <h2 className="text-xl font-semibold mb-3 line-clamp-2 text-blue-600">
                   {blog.title}
                 </h2>
-                
                 <p className="text-gray-600 mb-4 line-clamp-3">
                   {blog.content}
                 </p>
-                
                 <div className="flex items-center justify-between">
                   <button
                     onClick={() => handleReadMore(blog)}
@@ -114,11 +109,11 @@ const MyBlogs = () => {
           ))}
         </div>
 
-        {blogs.length === 0 && (
+        {myBlogs.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">You haven't written any blogs yet.</p>
             <Link
-              to="/blogs/myblogs"
+              to="/blogs/addblog"
               className="inline-block mt-4 text-blue-600 hover:text-blue-700 font-medium"
             >
               Write your first blog
@@ -130,4 +125,4 @@ const MyBlogs = () => {
   );
 };
 
-export default MyBlogs; 
+export default MyBlogs;

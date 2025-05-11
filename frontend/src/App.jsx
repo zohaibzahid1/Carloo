@@ -13,12 +13,11 @@ import OrderConfirmation from './pages/OrderConfirmation.jsx';
 import Register from './pages/Register.jsx';
 import ListYourCarPage from './pages/ListYourcarPage.jsx';
 import Listing from './pages/Listing.jsx';
-import Blog from './pages/Blog.jsx';
 import MyBlogs from './pages/MyBlogs.jsx';
 import AddBlog from './pages/AddBlog.jsx';
 import BlogDetail from './pages/BlogDetail.jsx';
 import MyListings from './pages/MyListing.jsx';
-
+import Blog from './pages/blog.jsx';
 function App() {
   // All the routes are defined here that will be used in the application using Link of react-router-dom
   // Temporary assignment of the component in each route
