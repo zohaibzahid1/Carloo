@@ -18,6 +18,7 @@ import MyBlogs from './pages/MyBlogs.jsx';
 import AddBlog from './pages/AddBlog.jsx';
 import BlogDetail from './pages/BlogDetail.jsx';
 import MyListings from './pages/MyListing.jsx';
+import UpdateProfile from './pages/UpdateProfile.jsx';
 
 function App() {
   // All the routes are defined here that will be used in the application using Link of react-router-dom
@@ -32,7 +33,7 @@ function App() {
         
         <Route path="/login" element={<Login />} /> 
         <Route path="/register" element={ <Register /> } />
-        <Route path="/updateprofile" element={<ProtectedRoute> <Home /> </ProtectedRoute>} />
+        <Route path="/updateprofile" element={<ProtectedRoute> <UpdateProfile /> </ProtectedRoute>} />
           
 
         <Route path="/home" element={ < Home/> }/> 
