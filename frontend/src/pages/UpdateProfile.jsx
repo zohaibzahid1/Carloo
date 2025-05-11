@@ -121,8 +121,8 @@ const UpdateProfile = () => {
       console.log('Update response:', response.data); // Debug log
       
       if (response.data.success) {
-        toast.success('Profile updated successfully!');
         setSuccess('Profile updated successfully!');
+        toast.success('Profile updated successfully!');
         // Update the dummy data with the response from server, in the correct order
         Object.assign(dummyUserData, {
           username: response.data.user.username,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, ArrowRight } from 'lucide-react';
-
+import listing from '../../assets/listing.jpg'
 const ListYourCar = () => {
   return (
     <section className="py-16 bg-gray-50">
@@ -44,7 +44,7 @@ const ListYourCar = () => {
               </div>
               <div className="md:w-1/2">
                 <img
-                  src="https://images.unsplash.com/photo-1617469767053-3c4f2a7c84e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
+                  src={listing}
                   alt="List your car"
                   className="w-full h-full object-cover"
                 />
