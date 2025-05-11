@@ -9,10 +9,7 @@ const VisualSection = () => {
       setScrollPosition(position);
     };
     
-    // window.addEventLisener('scroll', handleScroll);
-    // return () => {
-    //   window.removeEventListener('scroll', handleScroll);
-    // };
+    
   }, []);
   
   return (

@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
-import axiosInstance from '../services/AxiosInterceptor';
 import { format } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBlogs } from '../store/slices/blogSlice';
 import { toast } from 'react-toastify';
 
 const Blog = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { blogs, loading, error } = useSelector((state) => state.blogs);
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await axiosInstance.get('/blogs/getallblogs');
-        setBlogs(response.data);
-      } catch (err) {
-        toast.error('Failed to fetch blogs. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!blogs || blogs.length === 0) {
+    dispatch(fetchBlogs())
+  }
+  }, []); // this will run only once when the component mounts because of the empty dependency array
+  // and after the intital fetch of blogs it will get the blogs from the redux store  
 
-    fetchBlogs();
-  }, []);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   const handleReadMore = (blog) => {
     navigate(`/blog/${blog._id}`, { state: { blog } });
@@ -106,4 +105,4 @@ const Blog = () => {
   );
 };
 
-export default Blog; 
+export default Blog;

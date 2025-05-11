@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import axiosInstance from '../../services/AxiosInterceptor';
+import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { addBlog } from '../../store/slices/blogSlice';
 
 const BlogForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading,error } = useSelector(state => state.blogs);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
     category: ''
   });
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,23 +21,30 @@ const BlogForm = () => {
       [name]: value
     }));
   };
+  useEffect(() => {
+      if (error) {
+        toast.error(error);
+      }
+    }, [error]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    
 
-    try {
-      await axiosInstance.post('/blogs/add', formData);
-      toast.success('Blog created successfully!');
-      navigate('/blogs/myblogs');
-    } catch (err) {
+  //   try {
+  //     await axiosInstance.post('/blogs/add', formData);
+  //     toast.success('Blog created successfully!');
+  //     navigate('/blogs/myblogs');
+  //   } catch (err) {
 
-     const firstError = err.response?.data?.errors?.[0]?.msg;
-     toast.error(firstError || "Failed to create blog");
-    } finally {
-      setLoading(false);
-    }
-  };
+  //    const firstError = err.response?.data?.errors?.[0]?.msg;
+  //    toast.error(firstError || "Failed to create blog");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+    dispatch(addBlog(formData)).then(navigate('/blogs/myblogs'))
+};
+    
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-6 bg-blue-50 rounded-lg shadow-md">

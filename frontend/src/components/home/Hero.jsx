@@ -1,18 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from '../ui/SearchBar.jsx'
+
 const Hero = () => {
+  const navigate = useNavigate();
+  const [selectedCity, setSelectedCity] = useState('');
+
+  const handleCityClick = (city) => {
+    setSelectedCity(city);
+    navigate(`/listings?location=${city}`);
+  };
+
   return (
     <section className="relative h-screen">
-      {/* Background Image */}
+      {/* Background Image with Blue Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')",
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        {/* Blue Overlay */}
+        <div className="absolute inset-0 bg-blue-900 bg-opacity-70"></div>
       </div>
 
       {/* Content */}
@@ -34,13 +43,13 @@ const Hero = () => {
           <p className="text-center mb-4">Popular Locations:</p>
           <div className="flex flex-wrap justify-center gap-4">
             {['Karachi', 'Lahore', 'Islamabad', 'Peshawar'].map((city) => (
-              <Link
+              <button
                 key={city}
-                to={`/listings?location=${city}`}
-                className="px-4 py-2 bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all"
+                onClick={() => handleCityClick(city)}
+                className="px-4 py-2 bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all text-white border border-white"
               >
                 {city}
-              </Link>
+              </button>
             ))}
           </div>
         </div>

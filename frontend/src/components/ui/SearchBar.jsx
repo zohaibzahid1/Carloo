@@ -1,24 +1,39 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Search, MapPin, Calendar } from 'lucide-react';
 import { Button } from './button';
 
 const SearchBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchData, setSearchData] = useState({
     location: '',
     pickupDate: '',
     returnDate: ''
   });
 
+  // Initialize search data from URL parameters if they exist
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const locationParam = params.get('location');
+    if (locationParam) {
+      setSearchData(prev => ({
+        ...prev,
+        location: locationParam
+      }));
+    }
+  }, [location.search]);
+
   const handleSearch = (e) => {
     e.preventDefault();
+    // Build query string from search data
+    const params = new URLSearchParams();
+    if (searchData.location) params.append('location', searchData.location);
+    if (searchData.pickupDate) params.append('fromDate', searchData.pickupDate);
+    if (searchData.returnDate) params.append('toDate', searchData.returnDate);
+    
     // Navigate to listings page with search parameters
-    navigate('/listings', {
-      state: {
-        searchParams: searchData
-      }
-    });
+    navigate(`/listings?${params.toString()}`);
   };
 
   const handleChange = (e) => {
@@ -41,7 +56,7 @@ const SearchBar = () => {
             value={searchData.location}
             onChange={handleChange}
             placeholder="Pick-up Location"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-carloo-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -54,7 +69,8 @@ const SearchBar = () => {
             name="pickupDate"
             value={searchData.pickupDate}
             onChange={handleChange}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-carloo-500"
+            placeholder="Available From"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -67,7 +83,8 @@ const SearchBar = () => {
             name="returnDate"
             value={searchData.returnDate}
             onChange={handleChange}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-carloo-500"
+            placeholder="Available To"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
@@ -75,7 +92,7 @@ const SearchBar = () => {
         {/* Search Button */}
         <Button
           type="submit"
-          className="w-full bg-carloo-500 hover:bg-carloo-600 text-white flex items-center justify-center"
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center"
         >
           <Search className="h-5 w-5 mr-2" />
           Search Cars

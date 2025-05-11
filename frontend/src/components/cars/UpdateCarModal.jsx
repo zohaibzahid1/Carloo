@@ -130,27 +130,27 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl bg-white rounded-lg shadow-lg p-6">
+      <DialogContent className="max-w-2xl bg-white rounded-lg shadow-lg p-6 border-2 border-blue-200">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-blue-900">Update Car Details</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-blue-600">Update Car Details</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Location and Price */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="location" className="text-blue-900 font-medium">Location</Label>
+              <Label htmlFor="location" className="text-blue-600 font-medium">Location</Label>
               <Input
                 id="location"
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
                 required
-                className="border-blue-200 focus:border-blue-500"
+                className="border-blue-200 focus:border-blue-500 bg-white"
                 placeholder="Enter car location"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rentalPricePerDay" className="text-blue-900 font-medium">Rental Price Per Day</Label>
+              <Label htmlFor="rentalPricePerDay" className="text-blue-600 font-medium">Rental Price Per Day</Label>
               <Input
                 id="rentalPricePerDay"
                 name="rentalPricePerDay"
@@ -159,7 +159,7 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
                 value={formData.rentalPricePerDay}
                 onChange={handleChange}
                 required
-                className="border-blue-200 focus:border-blue-500"
+                className="border-blue-200 focus:border-blue-500 bg-white"
                 placeholder="Enter rental price"
               />
             </div>
@@ -167,14 +167,14 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
 
           {/* Color */}
           <div className="space-y-2">
-            <Label htmlFor="color" className="text-blue-900 font-medium">Color</Label>
+            <Label htmlFor="color" className="text-blue-600 font-medium">Color</Label>
             <Input
               id="color"
               name="color"
               value={formData.color}
               onChange={handleChange}
               required
-              className="border-blue-200 focus:border-blue-500"
+              className="border-blue-200 focus:border-blue-500 bg-white"
               placeholder="Enter car color"
             />
           </div>
@@ -182,7 +182,7 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
           {/* Availability Dates */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="availableFrom" className="text-blue-900 font-medium">Available From</Label>
+              <Label htmlFor="availableFrom" className="text-blue-600 font-medium">Available From</Label>
               <Input
                 id="availableFrom"
                 name="availableFrom"
@@ -191,11 +191,11 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
                 value={formData.availableFrom}
                 onChange={handleChange}
                 required
-                className="border-blue-200 focus:border-blue-500"
+                className="border-blue-200 focus:border-blue-500 bg-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="availableTo" className="text-blue-900 font-medium">Available To</Label>
+              <Label htmlFor="availableTo" className="text-blue-600 font-medium">Available To</Label>
               <Input
                 id="availableTo"
                 name="availableTo"
@@ -204,7 +204,7 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
                 value={formData.availableTo}
                 onChange={handleChange}
                 required
-                className="border-blue-200 focus:border-blue-500"
+                className="border-blue-200 focus:border-blue-500 bg-white"
               />
             </div>
           </div>
@@ -212,7 +212,7 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
           {/* Images */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label htmlFor="images" className="text-blue-900 font-medium">Car Images</Label>
+              <Label htmlFor="images" className="text-blue-600 font-medium">Car Images</Label>
               <div className="relative">
                 <Input
                   id="images"
@@ -239,11 +239,11 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
                   <img
                     src={image}
                     alt={`Car ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg shadow-md"
+                    className="w-full h-32 object-cover rounded-lg shadow-md border border-blue-100"
                   />
                   <button
                     type="button"
-                    className="absolute top-2 right-2 bg-red-500 text-black rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity font-bold text-lg"
+                    className="absolute top-2 right-2 bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity font-bold text-lg hover:bg-blue-700"
                     onClick={() => {
                       setFormData(prev => ({
                         ...prev,
@@ -264,7 +264,7 @@ const UpdateCarModal = ({ isOpen, onClose, car, onUpdate }) => {
               type="button"
               variant="outline"
               onClick={onClose}
-              className="border-blue-200 text-blue-900 hover:bg-blue-50"
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
             >
               Cancel
             </Button>

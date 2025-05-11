@@ -151,7 +151,7 @@ const Navbar = () => {
               </>
             )}
             <Link 
-              to="/blog" 
+              to="/blogs" 
               className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
