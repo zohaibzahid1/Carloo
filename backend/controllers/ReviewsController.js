@@ -61,3 +61,16 @@ export const getCarReviews = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch car reviews', error: err.message });
   }
 }
+// Delete a review
+export const deleteReview = async (req, res) => {
+  try {
+    const reviewId = req.params.id;
+    const review = await Review.findByIdAndDelete(reviewId);
+    if (!review) {
+      return res.status(404).json({ message: 'Review not found' });
+    }
+    res.status(200).json({ message: 'Review deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete review', error: err.message });
+  }
+};

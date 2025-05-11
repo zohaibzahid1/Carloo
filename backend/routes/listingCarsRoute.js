@@ -19,7 +19,7 @@ carRouter.put('/cars/:id', protectRoutes, carValidationRules, validateCar, updat
 // colon is needed by express not by client url should be /cars/id
 
 // Delete a car
-carRouter.delete('/cars/:id', protectRoutes, deleteCar);
+carRouter.delete('/cars/:id', deleteCar);
 
 // Get all cars by a specific user (auth required)
 carRouter.get('/carsbyuser', protectRoutes, getCarByUserId); // Auth required
