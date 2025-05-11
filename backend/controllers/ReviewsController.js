@@ -44,10 +44,18 @@ export const getAllReviews = async (req, res) => {
 export const getCarReviews = async (req, res) => {
   try {
     const carId = req.params.id;
-    const reviews = await MyRents.find({listingId: carId}).populate('reviewId');
-    if (!reviews) {
+    const rents = await MyRents.find({ listingId: carId }).populate('reviewId');
+    if (!rents || rents.length === 0) {
       return res.status(404).json({ message: 'No reviews found for this car' });
     }
+    const reviews = rents
+      .filter(rent => rent.reviewId)
+      .map(rent => ({
+        reviewId: rent.reviewId._id,
+        rating: rent.reviewId.rating,
+        title: rent.reviewId.title,
+        content: rent.reviewId.review,
+      }));
     res.status(200).json(reviews);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch car reviews', error: err.message });
