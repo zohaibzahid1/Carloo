@@ -29,7 +29,9 @@ const BlogForm = () => {
       toast.success('Blog created successfully!');
       navigate('/blogs/myblogs');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to create blog');
+
+     const firstError = err.response?.data?.errors?.[0]?.msg;
+     toast.error(firstError || "Failed to create blog");
     } finally {
       setLoading(false);
     }
