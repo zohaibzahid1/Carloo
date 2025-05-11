@@ -8,11 +8,9 @@ const CarsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('model');
   const [sortDirection, setSortDirection] = useState('asc');
-
   useEffect(() => {
     fetchCars();
   }, []);
-
  // ...existing code...
   const fetchCars = async () => {
     try {
