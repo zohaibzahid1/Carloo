@@ -9,7 +9,6 @@ const Register = () => {
     <div className="flex flex-col  min-h-screen w-full">
       <VisualSection />
       <RegistrationForm  />
-      
     </div>
   );
 };

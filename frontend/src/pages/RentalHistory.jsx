@@ -3,6 +3,7 @@ import RentalTable from '../components/Rentals/RentalTable';
 import Layout from '../components/layout/Layout';
 import axiosInstance from '../services/AxiosInterceptor';
 import Review from '../components/Reviews/Review.jsx';
+import { toast } from 'react-toastify';
 
 
 const RentalHistory = () => {
@@ -35,10 +36,8 @@ const RentalHistory = () => {
     setReviewLoading(true);
     try {
       // Send review to backend
-      const res = await axiosInstance.post('/reviews', {
-        ...reviewData,
-        rentId: reviewRentalId,
-      });
+      const res = await axiosInstance.post('/reviews/add', {...reviewData,
+        rentId: reviewRentalId,});
       if (res.status === 201) {
         setRentals(prevRentals =>
           prevRentals.map(rental =>
@@ -47,6 +46,7 @@ const RentalHistory = () => {
               : rental
           )
         );
+        toast.success('Review submitted successfully');
         handleCloseReview();
       } else {
         alert(res.data.message || 'Failed to submit review');
