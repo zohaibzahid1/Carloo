@@ -113,6 +113,24 @@ const Navbar = () => {
             >
               Cars
             </Link>
+            {user && (
+              <>
+                <Link 
+                  to="/listing/mylistings" 
+                  className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  My Listings
+                </Link>
+                <Link 
+                  to="/listing/myrents" 
+                  className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  My Rents
+                </Link>
+              </>
+            )}
             <Link 
               to="/blog" 
               className="block py-2 text-gray-700 hover:text-carloo-500 transition-colors"
