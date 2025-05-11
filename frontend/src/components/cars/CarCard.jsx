@@ -35,7 +35,7 @@ const CarCard = ({
       
       <div className="p-4">
         <div className="flex justify-between items-start">
-          <h3 className="font-heading font-semibold text-lg text-black">{title}</h3>
+          <h3 className="font-heading font-semibold text-lg text-black truncate max-w-[70%]">{title}</h3>
           <div className="flex items-center space-x-1">
             <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
             <span className="text-sm font-medium text-black">{rating}</span>
