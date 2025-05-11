@@ -49,9 +49,8 @@ const carSchema = new mongoose.Schema({
     }
   },
   createdAt: { type: Date, default: Date.now },
-  availability: {type: Boolean, default: true, required: true}
+  availability: {type: Boolean, default: true, required: true},
 });
-
 // Static method to create new car
 carSchema.statics.createNewCar = async function (data, ownerId) {
   const newCar = new this({

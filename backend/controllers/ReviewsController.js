@@ -1,4 +1,5 @@
 import Review from '../models/Reviews.js';
+import MyRents from '../models/MyRents.js';
 import { updateRentReviewId } from './MyRentsController.js';
 
 // Add a new review
@@ -37,3 +38,18 @@ export const getAllReviews = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch reviews', error: err.message });
   }
 };
+
+// Get all reviews of a car
+
+export const getCarReviews = async (req, res) => {
+  try {
+    const carId = req.params.id;
+    const reviews = await MyRents.find({listingId: carId}).populate('reviewId');
+    if (!reviews) {
+      return res.status(404).json({ message: 'No reviews found for this car' });
+    }
+    res.status(200).json(reviews);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch car reviews', error: err.message });
+  }
+}

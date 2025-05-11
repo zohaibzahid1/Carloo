@@ -67,3 +67,4 @@ export const getCarByUserId = async (req, res) => {
     res.status(500).json({ message: 'Error fetching cars by user', error: err });
   }
 };
+

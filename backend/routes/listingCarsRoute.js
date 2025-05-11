@@ -24,4 +24,7 @@ carRouter.delete('/cars/:id', protectRoutes, deleteCar);
 // Get all cars by a specific user (auth required)
 carRouter.get('/carsbyuser', protectRoutes, getCarByUserId); // Auth required
 
+
+
+
 export default carRouter;
