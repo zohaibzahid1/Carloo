@@ -1,41 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '../../components/ui/button';
-import { Checkbox } from '../../components/ui/checkbox';
 import { Label } from '../../components/ui/label';
 import { Slider } from '../../components/ui/slider';
 import { Input } from '../../components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import { Calendar } from 'lucide-react';
 
 const FilterSidebar = ({ onFilterChange, onReset }) => {
-  const [priceRange, setPriceRange] = useState([0, 500]);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 99999]);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const location = params.get('location');
+    const from = params.get('fromDate');
+    const to = params.get('toDate');
+    
+    if (location) setSelectedLocation(location);
+    if (from) setFromDate(from);
+    if (to) setToDate(to);
+  }, []);
+
+  const handleMinPriceChange = (e) => {
+    const value = e.target.value;
+    // Allow empty value
+    if (value === '') {
+      setPriceRange(['', priceRange[1]]);
+      return;
+    }
+    const min = parseInt(value);
+    const max = priceRange[1] === '' ? 10000 : priceRange[1];
+    if (!isNaN(min) && (max === '' || min <= max)) {
+      setPriceRange([min, priceRange[1]]);
+    }
+  };
+
+  const handleMaxPriceChange = (e) => {
+    const value = e.target.value;
+    // Allow empty value
+    if (value === '') {
+      setPriceRange([priceRange[0], '']);
+      return;
+    }
+    const max = parseInt(value);
+    const min = priceRange[0] === '' ? 0 : priceRange[0];
+    if (!isNaN(max) && (min === '' || max >= min)) {
+      setPriceRange([priceRange[0], max]);
+    }
+  };
 
   const handlePriceChange = (value) => {
-    setPriceRange(value);
-    onFilterChange({ minPrice: value[0], maxPrice: value[1] });
+    // Ensure min price doesn't exceed max price
+    const [min, max] = value;
+    if (min > max) {
+      setPriceRange([max, max]);
+    } else {
+      setPriceRange(value);
+    }
   };
 
-  const handleTypeChange = (type) => {
-    const newTypes = selectedTypes.includes(type)
-      ? selectedTypes.filter(t => t !== type)
-      : [...selectedTypes, type];
-    setSelectedTypes(newTypes);
-    onFilterChange({ carTypes: newTypes });
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
   };
 
-  const handleFeatureChange = (feature) => {
-    const newFeatures = selectedFeatures.includes(feature)
-      ? selectedFeatures.filter(f => f !== feature)
-      : [...selectedFeatures, feature];
-    setSelectedFeatures(newFeatures);
-    onFilterChange({ features: newFeatures });
+  const handleLocationChange = (location) => {
+    setSelectedLocation(location);
   };
 
   const handleReset = () => {
-    setPriceRange([0, 500]);
-    setSelectedTypes([]);
-    setSelectedFeatures([]);
+    setPriceRange([0, 99999]);
+    setSelectedYear('');
+    setSelectedLocation('');
+    setFromDate('');
+    setToDate('');
     onReset();
+    // Trigger filter change with reset values
+    onFilterChange({
+      minPrice: 0,
+      maxPrice: 99999,
+      year: '',
+      location: '',
+      fromDate: '',
+      toDate: ''
+    });
+  };
+
+  const handleApplyFilters = () => {
+    onFilterChange({
+      minPrice: priceRange[0] === '' ? 0 : priceRange[0],
+      maxPrice: priceRange[1] === '' ? 99999 : priceRange[1],
+      year: selectedYear,
+      location: selectedLocation,
+      fromDate: fromDate,
+      toDate: toDate
+    });
   };
 
   return (
@@ -59,71 +121,95 @@ const FilterSidebar = ({ onFilterChange, onReset }) => {
           <Input
             type="number"
             value={priceRange[0]}
-            onChange={(e) => handlePriceChange([parseInt(e.target.value), priceRange[1]])}
+            onChange={handleMinPriceChange}
+            min={0}
             className="w-24 border-carloo-200 focus:border-carloo-500"
+            placeholder="Min"
           />
           <span className="text-black">-</span>
           <Input
             type="number"
             value={priceRange[1]}
-            onChange={(e) => handlePriceChange([priceRange[0], parseInt(e.target.value)])}
+            onChange={handleMaxPriceChange}
+            min={0}
             className="w-24 border-carloo-200 focus:border-carloo-500"
+            placeholder="Max"
           />
         </div>
         <Slider
-          value={priceRange}
+          value={priceRange.map(v => v === '' ? 0 : v)}
           onValueChange={handlePriceChange}
           min={0}
-          max={500}
-          step={10}
+          max={10000}
+          step={100}
           className="mt-2"
         />
       </div>
 
-      {/* Car Types */}
+      {/* Availability Dates */}
       <div className="mb-6">
-        <Label className="text-black mb-2 block">Car Type</Label>
-        <div className="space-y-2">
-          {['Sedan', 'SUV', 'Sports Car', 'Luxury', 'Electric'].map((type) => (
-            <div key={type} className="flex items-center space-x-2">
-              <Checkbox
-                id={type}
-                checked={selectedTypes.includes(type)}
-                onCheckedChange={() => handleTypeChange(type)}
-                className="border-carloo-300 data-[state=checked]:bg-carloo-500 data-[state=checked]:border-carloo-500 data-[state=checked]:text-white"
-              />
-              <Label htmlFor={type} className="text-black cursor-pointer">{type}</Label>
-            </div>
-          ))}
+        <Label className="text-black mb-2 block">Availability</Label>
+        <div className="space-y-4">
+          <div className="relative">
+            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Input
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="w-full pl-10 border-carloo-200 focus:border-carloo-500"
+              placeholder="Available From"
+            />
+          </div>
+          <div className="relative">
+            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Input
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="w-full pl-10 border-carloo-200 focus:border-carloo-500"
+              placeholder="Available To"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Features */}
+      {/* Year */}
       <div className="mb-6">
-        <Label className="text-black mb-2 block">Features</Label>
-        <div className="space-y-2">
-          {['Air Conditioning', 'Bluetooth', 'GPS', 'Leather Seats', 'Sunroof'].map((feature) => (
-            <div key={feature} className="flex items-center space-x-2">
-              <Checkbox
-                id={feature}
-                checked={selectedFeatures.includes(feature)}
-                onCheckedChange={() => handleFeatureChange(feature)}
-                className="border-carloo-300 data-[state=checked]:bg-carloo-500 data-[state=checked]:border-carloo-500 data-[state=checked]:text-white"
-              />
-              <Label htmlFor={feature} className="text-black cursor-pointer">{feature}</Label>
-            </div>
-          ))}
-        </div>
+        <Label className="text-black mb-2 block">Year</Label>
+        <Select value={selectedYear} onValueChange={handleYearChange}>
+          <SelectTrigger className="w-full border-carloo-200 focus:border-carloo-500">
+            <SelectValue placeholder="Select year" />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+              <SelectItem key={year} value={year.toString()}>
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Location */}
+      <div className="mb-6">
+        <Label className="text-black mb-2 block">Location</Label>
+        <Select value={selectedLocation} onValueChange={handleLocationChange}>
+          <SelectTrigger className="w-full border-carloo-200 focus:border-carloo-500">
+            <SelectValue placeholder="Select location" />
+          </SelectTrigger>
+          <SelectContent>
+            {['Karachi', 'Lahore', 'Islamabad', 'Peshawar', 'Quetta'].map((location) => (
+              <SelectItem key={location} value={location}>
+                {location}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <Button 
-        className="w-full bg-carloo-500 hover:bg-carloo-600 text-white"
-        onClick={() => onFilterChange({
-          minPrice: priceRange[0],
-          maxPrice: priceRange[1],
-          carTypes: selectedTypes,
-          features: selectedFeatures
-        })}
+        className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+        onClick={handleApplyFilters}
       >
         Apply Filters
       </Button>
