@@ -7,6 +7,7 @@ import CarSpecifications from '../components/cars/CarSpecifications';
 import CarReviews from '../components/cars/CarReviews';
 import BookingSidebar from '../components/cars/BookingSidebar';
 import CarDetailHeader from '../components/cars/CarDetailHeader';
+import CarDetailTabs from '../components/cars/CarDetailTabs';
 
 const CarDetail = () => {
   const { id } = useParams();
@@ -171,15 +172,13 @@ const CarDetail = () => {
               onMainImageChange={setMainImage}
             />
 
-            <CarSpecifications 
-              car={car.car}
+            <CarDetailTabs
+              car={car}
               description={car.description}
               location={car.location}
               availableFrom={car.availableFrom}
               availableTo={car.availableTo}
             />
-
-            <CarReviews reviews={car.reviews} />
           </div>
           
           {/* Booking Sidebar */}

@@ -2,11 +2,14 @@ import React from 'react';
 import { Calendar, MapPin, Gauge, Briefcase } from 'lucide-react';
 
 const CarSpecifications = ({ car, description, location, availableFrom, availableTo }) => {
+  // Extract car details from the nested car.car object
+  const carDetails = car.car || car;
+  
   return (
     <div className="mb-8">
       <h2 className="text-xl font-bold mb-4">About this car</h2>
       <p className="text-gray-700 mb-6">
-        {description || `This ${car.year} ${car.make} ${car.model} is available for rent in ${location}. With its ${car.color} finish and reliable performance, this vehicle offers a comfortable driving experience.`}
+        {description || `This ${carDetails.year} ${carDetails.make} ${carDetails.model} is available for rent in ${location}. With its ${carDetails.color} finish and reliable performance, this vehicle offers a comfortable driving experience.`}
       </p>
       
       <h3 className="text-lg font-bold mb-3">Specifications</h3>
@@ -15,7 +18,7 @@ const CarSpecifications = ({ car, description, location, availableFrom, availabl
           <Calendar className="h-5 w-5 text-blue-500 mr-3" />
           <div>
             <div className="text-sm text-gray-500">Year</div>
-            <div className="font-medium">{car.year}</div>
+            <div className="font-medium">{carDetails.year}</div>
           </div>
         </div>
         <div className="flex items-center">
@@ -29,14 +32,14 @@ const CarSpecifications = ({ car, description, location, availableFrom, availabl
           <Gauge className="h-5 w-5 text-blue-500 mr-3" />
           <div>
             <div className="text-sm text-gray-500">Color</div>
-            <div className="font-medium">{car.color}</div>
+            <div className="font-medium">{carDetails.color}</div>
           </div>
         </div>
         <div className="flex items-center">
           <Briefcase className="h-5 w-5 text-blue-500 mr-3" />
           <div>
             <div className="text-sm text-gray-500">Registration</div>
-            <div className="font-medium">{car.registrationNumber}</div>
+            <div className="font-medium">{carDetails.registrationNumber}</div>
           </div>
         </div>
         <div className="flex items-center">

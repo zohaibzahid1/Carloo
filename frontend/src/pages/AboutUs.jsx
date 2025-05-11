@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Check, Users, ShieldCheck, Clock, Car } from 'lucide-react';
 import Layout from '../components/layout/Layout.jsx';
+import omImg from '../assets/om.jpg';
 
 const AboutUs = () => {
   const [showTeam, setShowTeam] = useState(false);
@@ -89,13 +90,9 @@ const AboutUs = () => {
             </div>
             <div className="overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:transform hover:scale-105">
               <img
-                src="https://images.unsplash.com/photo-1560639954-a8dced4c3db0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                src={omImg}
                 alt="Our Mission"
                 className="w-full h-auto"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23f0f0f0'/%3E%3Ctext x='400' y='300' font-family='Arial' font-size='24' text-anchor='middle' fill='%23999999'%3EImage not available%3C/text%3E%3C/svg%3E";
-                }}
               />
             </div>
           </div>

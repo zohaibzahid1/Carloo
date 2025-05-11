@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, ArrowRight } from 'lucide-react';
+import carFront from '../../assets/listing.png';
 
 const ListYourCar = () => {
   return (
@@ -42,11 +43,11 @@ const ListYourCar = () => {
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </div>
-              <div className="md:w-1/2">
+              <div className="md:w-1/2 flex items-center justify-center bg-white">
                 <img
-                  src="https://images.unsplash.com/photo-1617469767053-3c4f2a7c84e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
+                  src={carFront}
                   alt="List your car"
-                  className="w-full h-full object-cover"
+                  className="w-60 h-60 object-contain p-8"
                 />
               </div>
             </div>
