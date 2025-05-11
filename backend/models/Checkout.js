@@ -32,7 +32,7 @@ checkoutSchema.statics.createCheckout = async function ( userId, listingId, star
   const profit = +(totalPrice * 0.05).toFixed(2);
 
 
-  car.availability = false;
+  //car.availability = false;
   
   
   await car.save();
